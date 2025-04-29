@@ -43,5 +43,6 @@ def apply(obj, selection=None, **kwargs):
 
     for o in obj:
         for i in range(len(o.material_slots)):
-            bpy.ops.object.material_slot_remove({"object": o})
+            with bpy.context.temp_override(object=o):
+                bpy.ops.object.material_slot_remove()
     surface.add_material(obj, shader_invisible, selection=selection)
