@@ -59,6 +59,7 @@ from .util.generate_indoors_util import (
     place_cam_overhead,
     restrict_solving,
 )
+from .util.structured_language_util import StructuredLanguageWriter
 
 logger = logging.getLogger(__name__)
 
@@ -187,6 +188,8 @@ def compose_indoors(output_folder: Path, scene_seed: int, **overrides):
         return solver.solve_rooms(scene_seed, consgraph_rooms, stages["rooms"])
 
     state: state_def.State = p.run_stage("solve_rooms", solve_rooms, use_chance=False)
+    structured_language_writer = StructuredLanguageWriter(constants)
+    structured_language_writer.write(state)
 
     def solve_stage_name(stage_name: str, group: str, **kwargs):
         assigments = greedy.iterate_assignments(
